@@ -1,0 +1,35 @@
+--index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://pypi.org/simple
+
+torch
+torchvision
+torchaudio
+
+PyYAML
+numpy
+soundfile
+fastapi
+LangSegment
+transformers
+librosa
+einops
+x-transformers
+pytorch-lightning
+matplotlib
+cn2an
+pypinyin
+jieba_fast
+# pyopenjtalk
+wordsegment
+g2p_en
+fast_langdetect>=0.3.0
+jieba
+split-lang
+ffmpeg-python
+onnxruntime
+opencc
+
+fastapi
+uvicorn
+huggingface_hub
+loguru

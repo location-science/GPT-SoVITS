@@ -20,7 +20,7 @@ from tools.audio_sr import AP_BWE
 from AR.models.t2s_lightning_module import Text2SemanticLightningModule
 from feature_extractor.cnhubert import CNHubert
 from module.models import SynthesizerTrn, SynthesizerTrnV3
-from peft import LoraConfig, get_peft_model
+# from peft import LoraConfig, get_peft_model
 import librosa
 from time import time as ttime
 from tools.i18n.i18n import I18nAuto, scan_language_list
@@ -254,9 +254,9 @@ class TTS_Config:
             self.device = torch.device("cpu")
 
         self.is_half = self.configs.get("is_half", False)
-        # if str(self.device) == "cpu" and self.is_half:
-        #     print(f"Warning: Half precision is not supported on CPU, set is_half to False.")
-        #     self.is_half = False
+        if str(self.device) == "cpu" and self.is_half:
+            print(f"Warning: Half precision is not supported on CPU, set is_half to False.")
+            self.is_half = False
 
         self.version = version
         self.t2s_weights_path = self.configs.get("t2s_weights_path", None)
@@ -480,14 +480,14 @@ class TTS:
             print(f"Loading VITS weights from {weights_path}. {vits_model.load_state_dict(dict_s2['weight'], strict=False)}")
         else:
             print(f"Loading VITS pretrained weights from {weights_path}. {vits_model.load_state_dict(load_sovits_new(path_sovits_v3)['weight'], strict=False)}")
-            lora_rank=dict_s2["lora_rank"]
-            lora_config = LoraConfig(
-                target_modules=["to_k", "to_q", "to_v", "to_out.0"],
-                r=lora_rank,
-                lora_alpha=lora_rank,
-                init_lora_weights=True,
-            )
-            vits_model.cfm = get_peft_model(vits_model.cfm, lora_config)
+            # lora_rank=dict_s2["lora_rank"]
+            # lora_config = LoraConfig(
+            #     target_modules=["to_k", "to_q", "to_v", "to_out.0"],
+            #     r=lora_rank,
+            #     lora_alpha=lora_rank,
+            #     init_lora_weights=True,
+            # )
+            # vits_model.cfm = get_peft_model(vits_model.cfm, lora_config)
             print(f"Loading LoRA weights from {weights_path}. {vits_model.load_state_dict(dict_s2['weight'], strict=False)}")
             
             vits_model.cfm = vits_model.cfm.merge_and_unload()

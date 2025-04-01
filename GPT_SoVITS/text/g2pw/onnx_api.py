@@ -80,7 +80,7 @@ class G2PWOnnxConverter:
                  style: str='bopomofo',
                  model_source: str=None,
                  enable_non_tradional_chinese: bool=False):
-        uncompress_path = download_and_decompress(model_dir)
+        uncompress_path = "GPT_SoVITS/text/G2PWModel/G2PWModel_1.1"
 
         sess_options = onnxruntime.SessionOptions()
         sess_options.graph_optimization_level = onnxruntime.GraphOptimizationLevel.ORT_ENABLE_ALL

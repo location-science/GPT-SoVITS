@@ -18,7 +18,7 @@ from datasets1.dataset import amp_pha_stft, amp_pha_istft
 from models.model import APNet_BWE_Model
 import soundfile as sf
 import matplotlib.pyplot as plt
-from rich.progress import track
+# from rich.progress import track
 
 class AP_BWE():
     def __init__(self,device,DictToAttrRecursive,checkpoint_file=None):
