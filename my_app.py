@@ -3,12 +3,13 @@ from loguru import logger
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from contextlib import asynccontextmanager
+from typing import Optional
 from main import load_model, offload_model, tts_func
 
 # from dotenv import load_dotenv
 
 # load_dotenv()
-tts_zh_api_key = os.environ.get("TTS_DE_API_KEY")
+tts_zh_api_key = os.environ.get("TTS_ZH_API_KEY")
 
 # Configure logging
 log_level = "INFO"
@@ -65,24 +66,27 @@ def verify_key(key: str = ""):
 async def text_to_speech(
     text: str,
     language: str,
-    model: str,
+    model: Optional[str] = "v3",
     key: str = Depends(verify_key),
 ):
 
     if text in [None, ""]:
-        return JSONResponse(status_code=400, content={"message": "Parameter 'text' is required"})
+        raise HTTPException(status_code=422, detail="Parameter 'text' is required.")
     
     if (language in [None, ""]) :
-        return JSONResponse(status_code=400, content={"message": "Parameter 'language' is required"})
+        raise HTTPException(status_code=422, detail="Parameter 'language' is required.") 
     elif language.lower() not in ["en", "zh"]:
-        return JSONResponse(status_code=400, content={"message": f"Language '{language}' is not supported, support only 'en' and 'zh'."})
+        raise HTTPException(status_code=422, detail=f"Support only 'en' and 'zh' languages, but'{language}' is given.")
     
+    if model not in ["v2", "v3"]:
+        raise HTTPException(status_code=422, detail=f"Support only 'v2' and 'v3' version GPT-SoVITS models, but'{model}' is given.")
+
     audio_path = ""
     try:
         audio_path = tts_func(text, language, model)
     except Exception as e:
         logger.exception("Unexpected exception: {}".format(str(e)))
         raise HTTPException(
-            status_code=500, detail="TTS_zh API exception: {}".format(str(e))
+            status_code=500, detail="TTS API exception: {}".format(str(e))
         )
     return FileResponse(path=audio_path, media_type="audio/wav")
