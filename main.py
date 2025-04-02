@@ -1,6 +1,12 @@
 import soundfile as sf
 import os
+import sys
 from loguru import logger
+now_dir = os.getcwd()
+sys.path.append(now_dir)
+sys.path.append("%s/GPT_SoVITS" % (now_dir))
+# logger.info(f"sys.path: {sys.path}")
+# logger.info(f"Current working directory: {os.getcwd()}")
 from GPT_SoVITS.TTS_infer_pack.TTS import TTS, TTS_Config
 
 
@@ -9,7 +15,6 @@ tts_pipeline = None
 
 def load_model():
     global tts_pipeline
-    logger.info(f"Current path: {os.getcwd()}")
     config_path = "GPT_SoVITS/configs/tts_infer.yaml"
     tts_config = TTS_Config(config_path)
     logger.info(tts_config)
@@ -36,7 +41,7 @@ def tts_func(text: str, language: str, model: str):
         ref_audio_path = "ref_audio/tts_ref_en_male.wav"
         prompt_text = "The Munich metropolitan area has 3 million inhabitants; and the city's metropolitan region is home to about 6.2 million people."
     else:
-        ref_audio_path = "ref_audio/ttf_ref_zh_female.wav"
+        ref_audio_path = "ref_audio/tts_ref_zh_female.wav"
         prompt_text = "黄山位于中国安徽省南部黄山市境内，南北长约40公里，东西宽约30公里，主体以花岗岩构成"
 
     param = {

@@ -1,7 +1,7 @@
 FROM python:3.10-slim
 
 RUN apt-get update && \
-    apt-get install -y build-essential git && \
+    apt-get install -y build-essential git ffmpeg unzip && \
     rm -rf /var/lib/apt/lists/*
 
 ARG API_KEY
@@ -25,6 +25,8 @@ ENV PATH="/opt/venv/bin:${PATH}"
 
 RUN python /src/download_models.py
 
+RUN unzip /src/GPT_SoVITS/text/G2PWModel/G2PWModel_1.1.zip -d /src/GPT_SoVITS/text/G2PWModel/ && \
+    rm GPT_SoVITS/text/G2PWModel/G2PWModel_1.1.zip
 
 EXPOSE 9503
 CMD ["uvicorn", "my_app:app", "--host=0.0.0.0", "--port=9503"]

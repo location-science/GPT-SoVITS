@@ -8,7 +8,6 @@ torchaudio
 PyYAML
 numpy
 soundfile
-fastapi
 LangSegment
 transformers
 librosa
@@ -22,7 +21,7 @@ jieba_fast
 # pyopenjtalk
 wordsegment
 g2p_en
-fast_langdetect>=0.3.0
+fast-langdetect>=0.3.0
 jieba
 split-lang
 ffmpeg-python

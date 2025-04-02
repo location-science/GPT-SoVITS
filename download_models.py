@@ -8,7 +8,7 @@ snapshot_download(repo_id="L-jasmine/GPT_Sovits", local_dir="/src/GPT_SoVITS/tex
                   allow_patterns="G2PWModel_1.1.zip")
                   
 # Download GPT_SoVITS model
-snapshot_download(repo_id="lj1995/GPT-SoVITS", local_dir="/src/GPT-SoVITS/pretrained_models", 
+snapshot_download(repo_id="lj1995/GPT-SoVITS", local_dir="/src/GPT_SoVITS/pretrained_models", 
                   ignore_patterns=["s1bert25hz-2kh-longer-epoch=68e-step=50232.ckpt", "s2D488k.pth", "s2G488k.pth"])
 
 # Download nltk package
