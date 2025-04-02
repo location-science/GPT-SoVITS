@@ -2,6 +2,7 @@ import soundfile as sf
 import os
 import sys
 from loguru import logger
+from datetime import datetime
 now_dir = os.getcwd()
 sys.path.append(now_dir)
 sys.path.append("%s/GPT_SoVITS" % (now_dir))
@@ -20,6 +21,8 @@ def load_model():
     logger.info(tts_config)
     tts_pipeline = TTS(tts_config)
     logger.info("Loaded models.")
+    _ = tts_func(text="这是初始的示例调用", language="zh", model="v2")
+    logger.info("Initial call for TTS for setting reference audio finished.")
     return
 
 
@@ -69,7 +72,7 @@ def tts_func(text: str, language: str, model: str):
             }
     tts_generator = tts_pipeline.run(param)
     sr, audio_data = next(tts_generator)
-    output_path = "tts_output.wav"
+    output_path = f"tts_output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.wav"
     # Save to file directly using soundfile
-    sf.write("tts_output.wav", audio_data, sr, format='wav')
+    sf.write(output_path, audio_data, sr, format='wav')
     return output_path
