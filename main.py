@@ -2,6 +2,7 @@ import soundfile as sf
 import os
 import sys
 from loguru import logger
+import ffmpeg
 from datetime import datetime
 now_dir = os.getcwd()
 sys.path.append(now_dir)
@@ -72,7 +73,8 @@ def tts_func(text: str, language: str, model: str):
             }
     tts_generator = tts_pipeline.run(param)
     sr, audio_data = next(tts_generator)
-    output_path = f"tts_output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.wav"
-    # Save to file directly using soundfile
-    sf.write(output_path, audio_data, sr, format='wav')
+    # Save the output audio 
+    sf.write("tts_output.wav", audio_data, sr, format='wav')
+    output_path = f"/tmp/tts_output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.mp3"
+    ffmpeg.input('tts_output.wav').output(output_path, audio_bitrate='192k').run()
     return output_path

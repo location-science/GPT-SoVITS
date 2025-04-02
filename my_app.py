@@ -89,4 +89,4 @@ async def text_to_speech(
         raise HTTPException(
             status_code=500, detail="TTS API exception: {}".format(str(e))
         )
-    return FileResponse(path=audio_path, media_type="audio/wav")
+    return FileResponse(path=audio_path, media_type="audio/mp3")
