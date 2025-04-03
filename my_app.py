@@ -7,9 +7,9 @@ from typing import Optional
 from main import load_model, offload_model, tts_func
 
 # from dotenv import load_dotenv
-
 # load_dotenv()
 tts_zh_api_key = os.environ.get("TTS_ZH_API_KEY")
+
 
 # Configure logging
 log_level = "INFO"
@@ -66,7 +66,6 @@ def verify_key(key: str = ""):
 async def text_to_speech(
     text: str,
     language: str,
-    model: Optional[str] = "v3",
     key: str = Depends(verify_key),
 ):
 
@@ -78,12 +77,9 @@ async def text_to_speech(
     elif language.lower() not in ["en", "zh"]:
         raise HTTPException(status_code=422, detail=f"Support only 'en' and 'zh' languages, but'{language}' is given.")
     
-    if model not in ["v2", "v3"]:
-        raise HTTPException(status_code=422, detail=f"Support only 'v2' and 'v3' version GPT-SoVITS models, but'{model}' is given.")
-
     audio_path = ""
     try:
-        audio_path = tts_func(text, language, model)
+        audio_path = tts_func(text, language)
     except Exception as e:
         logger.exception("Unexpected exception: {}".format(str(e)))
         raise HTTPException(

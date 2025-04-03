@@ -224,7 +224,7 @@ class TTS_Config:
     # "auto",#多语种启动切分识别语种
     # "auto_yue",#多语种启动切分识别语种
 
-    def __init__(self, configs: Union[dict, str]=None):
+    def __init__(self, configs: Union[dict, str]=None, GPT_SoVITS_model_version: str="v2"):
 
         # 设置默认配置文件路径
         configs_base_path:str = "GPT_SoVITS/configs/"
@@ -242,7 +242,7 @@ class TTS_Config:
             configs:dict = self._load_configs(self.configs_path)
 
         assert isinstance(configs, dict)
-        version = configs.get("version", "v2").lower()
+        version = configs.get("version", GPT_SoVITS_model_version).lower()
         assert version in ["v1", "v2", "v3"]
         self.default_configs[version] = configs.get(version, self.default_configs[version])
         self.configs:dict = configs.get("custom", deepcopy(self.default_configs[version]))

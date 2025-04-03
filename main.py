@@ -14,16 +14,19 @@ from GPT_SoVITS.TTS_infer_pack.TTS import TTS, TTS_Config
 
 tts_pipeline = None
 
+# from dotenv import load_dotenv
+# load_dotenv()
 
 def load_model():
     global tts_pipeline
     config_path = "GPT_SoVITS/configs/tts_infer.yaml"
-    tts_config = TTS_Config(config_path)
+    model_version = os.environ.get("GPT_SoVITS_MODEL_VERSION")
+    tts_config = TTS_Config(config_path, model_version)
     logger.info(tts_config)
     tts_pipeline = TTS(tts_config)
     logger.info("Loaded models.")
-    _ = tts_func(text="这是初始的示例调用", language="zh", model="v2")
-    logger.info("Initial call for TTS for setting reference audio finished.")
+    # _ = tts_func(text="这是初始的示例调用", language="zh")
+    # logger.info("Initial call for TTS for setting reference audio finished.")
     return
 
 
@@ -34,10 +37,7 @@ def offload_model():
     return
 
 
-def tts_func(text: str, language: str, model: str):
-    # Check parameters
-    media_type = "wav"
-    
+def tts_func(text: str, language: str):
     # if text_split_method not in cut_method_names:
     #     return JSONResponse(status_code=400, content={"message": f"text_split_method:{text_split_method} is not supported"})
     
@@ -76,5 +76,5 @@ def tts_func(text: str, language: str, model: str):
     # Save the output audio 
     sf.write("tts_output.wav", audio_data, sr, format='wav')
     output_path = f"/tmp/tts_output_{datetime.now().strftime('%Y%m%d_%H%M%S')}.mp3"
-    ffmpeg.input('tts_output.wav').output(output_path, audio_bitrate='192k').run()
+    ffmpeg.input('tts_output.wav').output(output_path, audio_bitrate='192k').run(quiet=True)
     return output_path
