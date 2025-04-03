@@ -1,9 +1,8 @@
 import os
 from loguru import logger
 from fastapi import Depends, FastAPI, HTTPException
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
-from typing import Optional
 from main import load_model, offload_model, tts_func
 
 # from dotenv import load_dotenv
@@ -71,12 +70,15 @@ async def text_to_speech(
 
     if text in [None, ""]:
         raise HTTPException(status_code=422, detail="Parameter 'text' is required.")
-    
-    if (language in [None, ""]) :
-        raise HTTPException(status_code=422, detail="Parameter 'language' is required.") 
+
+    if language in [None, ""]:
+        raise HTTPException(status_code=422, detail="Parameter 'language' is required.")
     elif language.lower() not in ["en", "zh"]:
-        raise HTTPException(status_code=422, detail=f"Support only 'en' and 'zh' languages, but'{language}' is given.")
-    
+        raise HTTPException(
+            status_code=422,
+            detail=f"Support only 'en' and 'zh' languages, but'{language}' is given.",
+        )
+
     audio_path = ""
     try:
         audio_path = tts_func(text, language)

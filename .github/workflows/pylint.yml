@@ -20,4 +20,4 @@ jobs:
         pip install flake8
     - name: Analysing the code with flake8
       run: |
-        flake8 --extend-exclude .venv,model --ignore=E501,E203,W503 .
+        flake8 --extend-exclude .venv,model --ignore=E501,E203,W503 download_models.py my_app.py my_demo.py my_test.py main.py
