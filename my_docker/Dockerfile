@@ -4,9 +4,6 @@ RUN apt-get update && \
     apt-get install -y build-essential wget ffmpeg unzip && \
     rm -rf /var/lib/apt/lists/*
 
-ARG API_KEY
-ENV TTS_ZH_API_KEY=${API_KEY}
-
 WORKDIR /src
 
 COPY my_requirements.txt .
