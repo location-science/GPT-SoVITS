@@ -96,6 +96,7 @@ jobs:
     env:
       AZURE_RESOURCE_GROUP: smartguide-nlp
       AZURE_CONTAINER_APP: tts-zh
+      TTS_ZH_API_KEY: ${{ secrets.TTS_ZH_API_SEC }}
     steps:
       - name: Azure Login
         uses: azure/login@v2
